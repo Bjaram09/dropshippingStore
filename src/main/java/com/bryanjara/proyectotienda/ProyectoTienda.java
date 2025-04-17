@@ -4,6 +4,9 @@
 
 package com.bryanjara.proyectotienda;
 
+import com.bryanjara.proyectotienda.controllers.AdministradorController;
+import com.bryanjara.proyectotienda.views.ViewRegistrarAdministrador;
+
 /**
  *
  * @author bryan
@@ -11,6 +14,7 @@ package com.bryanjara.proyectotienda;
 public class ProyectoTienda {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        ViewRegistrarAdministrador vista = new ViewRegistrarAdministrador();
+        new AdministradorController(vista);
     }
 }
