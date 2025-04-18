@@ -1,4 +1,4 @@
-package com.bryanjara.proyectotienda;
+package com.bryanjara.proyectotienda.models;
 import java.util.ArrayList;
 import java.util.List;
 

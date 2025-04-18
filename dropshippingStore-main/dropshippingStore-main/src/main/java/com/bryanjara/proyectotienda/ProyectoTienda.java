@@ -4,17 +4,18 @@
 
 package com.bryanjara.proyectotienda;
 
-import com.bryanjara.proyectotienda.controllers.AdministradorController;
-import com.bryanjara.proyectotienda.views.ViewRegistrarAdministrador;
+import com.bryanjara.proyectotienda.controller.AdministradorController;
+import com.bryanjara.proyectotienda.views.RegistrarAdministrador;
 
 /**
  *
  * @author bryan
  */
-public class ProyectoTienda {
 
+public class ProyectoTienda {
     public static void main(String[] args) {
-        ViewRegistrarAdministrador vista = new ViewRegistrarAdministrador();
+        RegistrarAdministrador vista = new RegistrarAdministrador();
         new AdministradorController(vista);
     }
 }
+

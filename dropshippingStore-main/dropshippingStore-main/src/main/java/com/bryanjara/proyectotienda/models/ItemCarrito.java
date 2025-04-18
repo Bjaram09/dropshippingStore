@@ -1,4 +1,4 @@
-package com.bryanjara.proyectotienda;
+package com.bryanjara.proyectotienda.models;
 
 public class ItemCarrito {
     private Producto producto;
