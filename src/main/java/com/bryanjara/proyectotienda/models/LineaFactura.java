@@ -1,47 +1,34 @@
 package com.bryanjara.proyectotienda.models;
 
 public class LineaFactura {
-    private Producto producto;
-    private int cantidad;
-    private double precioIndividual;
+    private String ID;
+    private ItemCarrito itemCarrito;
     private double montoTotal;
 
     public LineaFactura() {
-        this.producto = new Producto();
-        this.cantidad = 0;
-        this.precioIndividual = 0;
+        this.itemCarrito = new ItemCarrito();
         this.montoTotal = 0;
     }
 
-    public LineaFactura(Producto producto, int cantidad) {
-        this.producto = producto;
-        this.cantidad = cantidad;
-        this.precioIndividual = producto.getPrecio();
-        this.montoTotal = cantidad * precioIndividual;
+    public LineaFactura(ItemCarrito itemCarrito, int montoTotal) {
+        this.itemCarrito = itemCarrito;
+        this.montoTotal = itemCarrito.getCantidad() * itemCarrito.getProducto().getPrecio();
     }
 
-    public Producto getProducto() {
-        return producto;
+    public String getID() {
+        return ID;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public ItemCarrito getItemCarrito() {
+        return itemCarrito;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public double getPrecioIndividual() {
-        return precioIndividual;
-    }
-
-    public void setPrecioIndividual(double precioIndividual) {
-        this.precioIndividual = precioIndividual;
+    public void setItemCarrito(ItemCarrito itemCarrito) {
+        this.itemCarrito = itemCarrito;
     }
 
     public void setMontoTotal(double montoTotal) {
@@ -55,9 +42,7 @@ public class LineaFactura {
     @Override
     public String toString() {
         return "LineaFactura{" +
-                "producto=" + producto +
-                ", cantidad=" + cantidad +
-                ", precioIndividual=" + precioIndividual +
+                "itemCarrito=" + itemCarrito +
                 ", montoTotal=" + montoTotal +
                 '}';
     }
