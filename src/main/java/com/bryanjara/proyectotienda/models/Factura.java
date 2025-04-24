@@ -1,8 +1,18 @@
-package com.bryanjara.proyectotienda.models;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Modelo;
+
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author Fio
+ */
 public class Factura {
+
     private List<LineaFactura> itemFactura;
     private double impuesto;
     private double total;
@@ -24,7 +34,8 @@ public class Factura {
         for (LineaFactura item : itemFactura) {
             subtotal += item.getMontoTotal();
         }
-        return subtotal + (subtotal * impuesto);
+        this.impuesto = subtotal * 0.13; 
+        return subtotal + impuesto;
     }
 
     public List<LineaFactura> getItemFactura() {
@@ -53,10 +64,11 @@ public class Factura {
 
     @Override
     public String toString() {
-        return "Factura{" +
-                "itemFactura=" + itemFactura +
-                ", impuesto=" + impuesto +
-                ", total=" + total +
-                '}';
+        return """
+               Factura
+               Items de la Factura: """ + itemFactura
+                + "\nTotal Impuesto: " + impuesto
+                + "\nTotal: " + total
+                + ' ';
     }
 }

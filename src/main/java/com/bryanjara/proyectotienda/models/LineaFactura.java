@@ -1,64 +1,62 @@
-package com.bryanjara.proyectotienda.models;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Modelo;
 
-public class LineaFactura {
-    private Producto producto;
-    private int cantidad;
-    private double precioIndividual;
+/**
+ *
+ * @author Fio
+ */
+public class LineaFactura{
+    private int id;
+    private ItemCarrito itemCarrito;
     private double montoTotal;
-
-    public LineaFactura() {
-        this.producto = new Producto();
-        this.cantidad = 0;
-        this.precioIndividual = 0;
+    
+    public LineaFactura(){
+        this.id = 0;
+        this.itemCarrito = new ItemCarrito();
         this.montoTotal = 0;
     }
-
-    public LineaFactura(Producto producto, int cantidad) {
-        this.producto = producto;
-        this.cantidad = cantidad;
-        this.precioIndividual = producto.getPrecio();
-        this.montoTotal = cantidad * precioIndividual;
+    
+    public LineaFactura(int id, ItemCarrito itemCarrito){
+        this.id = id;
+        this.itemCarrito = itemCarrito;
+        double precio = itemCarrito.getProducto().getPrecio();
+        int cantidad = itemCarrito.getCantidad();
+        this.montoTotal = cantidad * precio;
     }
-
-    public Producto getProducto() {
-        return producto;
+    public int getId(){
+        return id;
     }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    
+    public void setId(int id){
+        this.id = id;
     }
-
-    public int getCantidad() {
-        return cantidad;
+    
+    public ItemCarrito getItemCarrito(){
+        return itemCarrito;
     }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    
+    public void setItemCarrito(ItemCarrito itemCarrito){
+        this.itemCarrito = itemCarrito;
     }
-
-    public double getPrecioIndividual() {
-        return precioIndividual;
-    }
-
-    public void setPrecioIndividual(double precioIndividual) {
-        this.precioIndividual = precioIndividual;
-    }
-
-    public void setMontoTotal(double montoTotal) {
-        this.montoTotal = montoTotal;
-    }
-
-    public double getMontoTotal() {
+    
+    public double getMontoTotal(){
         return montoTotal;
     }
-
+    
+    public void setMontoTotal(double montoTotal){
+        this.montoTotal = montoTotal;
+    }
+    
     @Override
-    public String toString() {
-        return "LineaFactura{" +
-                "producto=" + producto +
-                ", cantidad=" + cantidad +
-                ", precioIndividual=" + precioIndividual +
-                ", montoTotal=" + montoTotal +
-                '}';
+    public String toString(){
+        return """
+               LineaFactura
+               Id:  """ + id +
+        " \n Items registrados en el carrito: " + itemCarrito +
+        " \n Monto Total: " + montoTotal +
+        ' ';
     }
 }
