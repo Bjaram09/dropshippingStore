@@ -1,20 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package Controlador;
+package com.bryanjara.proyectotienda.controllers;
 
-import dataaccess.GlobalException;
-import dataaccess.NoDataException;
-import dataaccess.ServicioItemCarrito;
-import Modelo.ItemCarrito;
+import com.bryanjara.proyectotienda.dataaccess.*;
+import com.bryanjara.proyectotienda.models.ItemCarrito;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Fio
- */
 public class MenuLineaFactura {
 
     public void menuLineaFactura() {

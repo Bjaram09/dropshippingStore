@@ -1,9 +1,5 @@
-package Modelo;
+package com.bryanjara.proyectotienda.models;
 
-/**
- *
- * @author Fio
- */
 public class LineaFactura{
     private int id;
     private ItemCarrito itemCarrito;

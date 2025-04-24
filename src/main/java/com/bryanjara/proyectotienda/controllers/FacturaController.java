@@ -1,19 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package Controlador;
+package com.bryanjara.proyectotienda.controllers;
 
-/**
- *
- * @author Fio
- */
-import dataaccess.GlobalException;
-import dataaccess.NoDataException;
-import dataaccess.ServicioFactura;
-import Modelo.Factura;
-import Modelo.LineaFactura;
-import Vista.ViewFactura;
+
+import com.bryanjara.proyectotienda.dataaccess.*;
+import com.bryanjara.proyectotienda.models.Factura;
+import com.bryanjara.proyectotienda.models.LineaFactura;
+import com.bryanjara.proyectotienda.views.ViewFactura;
 import javax.swing.*;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
@@ -24,11 +15,11 @@ import java.util.logging.Logger;
 
 public class FacturaController {
     private final ViewFactura vista;
-    private final ServicioFactura servicio;
+    private final FacturaDAO servicio;
 
     public FacturaController() {
         this.vista = new ViewFactura();
-        this.servicio = new ServicioFactura();
+        this.servicio = new FacturaDAO();
     }
 
     public void registrarFactura(LineaFactura[] lineas) {

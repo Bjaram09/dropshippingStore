@@ -1,25 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package dataaccess;
+package com.bryanjara.proyectotienda.dataaccess;
 
-import Modelo.ItemCarrito;
+import com.bryanjara.proyectotienda.models.*;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import oracle.jdbc.internal.OracleTypes;
-import Modelo.LineaFactura;
-import Modelo.Producto;
 import java.sql.Types;
 
 /**
  *
  * @author Fio
  */
-public class ServicioLineaFactura extends Servicio {
+public class ServicioLineaFactura extends ServicioDB {
 
     private static final String insertar_linea_factura = "{call insertar_linea_factura (?,?,?)}";
     private static final String listar_lineas_factura = "{?=call listar_lineas_factura()}";

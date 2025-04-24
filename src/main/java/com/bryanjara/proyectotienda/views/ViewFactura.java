@@ -1,11 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package Vista;
+package com.bryanjara.proyectotienda.views;
 
-import Modelo.Factura;
-import Modelo.LineaFactura;
+import com.bryanjara.proyectotienda.models.Factura;
+import com.bryanjara.proyectotienda.models.LineaFactura;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
