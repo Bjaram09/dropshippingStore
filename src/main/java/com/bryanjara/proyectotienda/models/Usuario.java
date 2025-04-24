@@ -88,10 +88,14 @@ public abstract class Usuario {
     }
 
     public boolean validarEdad() {
-        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate fechaNac = LocalDate.parse(fechaNacimiento, formateador);
-        LocalDate fechaActual = LocalDate.now();
-        return Period.between(fechaNac, fechaActual).getYears() >= 18;
+        try {
+            DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate fechaNac = LocalDate.parse(fechaNacimiento, formateador);
+            LocalDate fechaActual = LocalDate.now();
+            return Period.between(fechaNac, fechaActual).getYears() >= 18;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean validarContrasenia(String contrasenia) {

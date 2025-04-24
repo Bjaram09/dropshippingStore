@@ -1,20 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package com.bryanjara.proyectotienda;
 
-import com.bryanjara.proyectotienda.controllers.AdministradorController;
-import com.bryanjara.proyectotienda.views.ViewRegistrarAdministrador;
+import com.bryanjara.proyectotienda.controllers.RegistrationController;
+import com.bryanjara.proyectotienda.dataaccess.GlobalException;
+import com.bryanjara.proyectotienda.dataaccess.NoDataException;
+import com.bryanjara.proyectotienda.views.RegistrationView;
 
-/**
- *
- * @author bryan
- */
+import java.sql.SQLException;
+
 public class ProyectoTienda {
-
     public static void main(String[] args) {
-        ViewRegistrarAdministrador vista = new ViewRegistrarAdministrador();
-        new AdministradorController(vista);
+        try {
+            RegistrationView view = new RegistrationView();
+            new RegistrationController(view);
+        } catch (GlobalException | SQLException | NoDataException e) {
+            e.printStackTrace();
+        }
     }
 }

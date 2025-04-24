@@ -12,26 +12,25 @@ import java.util.List;
  * @author Fio
  */
 public class Factura {
-
-    private List<LineaFactura> itemFactura;
+    private ArrayList<LineaFactura> itemsFactura;
     private double impuesto;
     private double total;
 
     public Factura() {
-        this.itemFactura = new ArrayList<LineaFactura>();
+        this.itemsFactura = new ArrayList<LineaFactura>();
         this.impuesto = 0;
         this.total = 0;
     }
 
-    public Factura(List<LineaFactura> itemFactura, double impuesto) {
-        this.itemFactura = itemFactura;
+    public Factura(ArrayList<LineaFactura> itemsFactura, double impuesto) {
+        this.itemsFactura = itemsFactura;
         this.impuesto = impuesto;
         this.total = calcularTotal();
     }
 
     private double calcularTotal() {
         double subtotal = 0;
-        for (LineaFactura item : itemFactura) {
+        for (LineaFactura item : itemsFactura) {
             subtotal += item.getMontoTotal();
         }
         this.impuesto = subtotal * 0.13; 
@@ -39,11 +38,11 @@ public class Factura {
     }
 
     public List<LineaFactura> getItemFactura() {
-        return itemFactura;
+        return itemsFactura;
     }
 
-    public void setItemFactura(List<LineaFactura> itemFactura) {
-        this.itemFactura = itemFactura;
+    public void setItemFactura(ArrayList<LineaFactura> itemsFactura) {
+        this.itemsFactura = this.itemsFactura;
     }
 
     public double getImpuesto() {
@@ -64,7 +63,7 @@ public class Factura {
 
     @Override
     public String toString() {
-        return """
+       return """
                Factura
                Items de la Factura: """ + itemFactura
                 + "\nTotal Impuesto: " + impuesto

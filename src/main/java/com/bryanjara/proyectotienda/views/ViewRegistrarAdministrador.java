@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
-public class ViewRegistrarAdministrador extends JFrame {
+public class ViewRegistrarAdministrador extends BaseView {
     private JTextField inputNombreUsuario = new JTextField();
     private JTextField inputNombreCompleto = new JTextField();
     private JTextField inputCedula = new JTextField();

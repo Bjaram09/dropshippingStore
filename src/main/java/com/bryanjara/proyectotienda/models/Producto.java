@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * @author bryan
  */
 public class Producto {
+    private int ID;
     private String nombre;
     private String categoria;
     private double precio;
@@ -49,7 +50,30 @@ public class Producto {
         this.vendedor = vendedor;
     }
 
+    public Producto(int ID, String nombre, String categoria, double precio, double peso, String dimensiones,
+                    ArrayList<Image> imagenes, String descripcion, int inventarioDisponible, Vendedor vendedor) {
+        this.ID = ID;
+        this.nombre = nombre;
+        this.categoria = categoria;
+        this.precio = precio;
+        this.peso = peso;
+        this.dimensiones = dimensiones;
+        this.imagenes = imagenes;
+        this.descripcion = descripcion;
+        this.inventarioDisponible = inventarioDisponible;
+        this.vendedor = vendedor;
+    }
+
     // Getters y Setters
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
     public String getNombre() {
         return nombre;
     }
