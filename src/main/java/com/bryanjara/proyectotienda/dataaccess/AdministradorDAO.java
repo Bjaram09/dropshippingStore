@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AdministradorDAO extends ServicioDB{
     private static final String INSERTAR_ADMINISTRADOR = "{CALL DROPSHIPPING.INSERTAR_ADMINISTRADOR(?, ?, ?, ?, ?, ?)}";
@@ -25,7 +28,16 @@ public class AdministradorDAO extends ServicioDB{
             pstmt.setString(1, administrador.getCedulaIdentidad());
             pstmt.setString(2, administrador.getNombreUsuario());
             pstmt.setString(3, administrador.getNombreCompleto());
-            pstmt.setString(4, administrador.getFechaNacimiento());
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                java.util.Date utilDate = sdf.parse(administrador.getFechaNacimiento()); 
+                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                pstmt.setDate(4, sqlDate);
+            } catch (ParseException e) {
+                throw new IllegalArgumentException("Invalid date format. Expected dd/MM/yyyy");
+            }
+
             pstmt.setString(5, administrador.getCorreoElectronico());
             pstmt.setString(6, administrador.getContrasenia());
         } catch (SQLException e) {
@@ -138,11 +150,19 @@ public class AdministradorDAO extends ServicioDB{
             while (rs.next()) {
                 ResultSet administradoresCursor = (ResultSet) rs.getObject(1);
                 while (administradoresCursor.next()) {
+                    String fechaNacimiento = administradoresCursor.getString("FECHANACIMIENTO");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    try {
+                        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimiento);
+                        fechaNacimiento = sdf.format(date);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     Administrador administrador = new Administrador(
                             administradoresCursor.getString("CEDULAIDENTIDAD"),
                             administradoresCursor.getString("NOMBREUSUARIO"),
                             administradoresCursor.getString("NOMBRECOMPLETO"),
-                            administradoresCursor.getString("FECHANACIMIENTO"),
+                            fechaNacimiento,
                             administradoresCursor.getString("CORREOELECTRONICO"),
                             administradoresCursor.getString("CONTRASENIA")
                     );
