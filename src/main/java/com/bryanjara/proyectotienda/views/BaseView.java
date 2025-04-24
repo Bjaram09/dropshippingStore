@@ -12,6 +12,7 @@ public class BaseView extends JFrame {
     protected static final Color TABLE_HEADER_COLOR = new Color(52, 73, 94);
     protected static final Color TABLE_ROW_COLOR = Color.WHITE;
     protected static final Color TABLE_ALTERNATE_ROW_COLOR = new Color(245, 245, 245);
+    protected static final Color INPUT_BACKGROUND = Color.WHITE;
 
     protected JPanel createHeaderPanel(String title) {
         JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));

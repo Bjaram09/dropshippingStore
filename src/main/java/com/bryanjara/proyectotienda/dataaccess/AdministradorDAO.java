@@ -156,10 +156,6 @@ public class AdministradorDAO extends ServicioDB{
             desconectar();
         }
 
-        if (coleccion.isEmpty()) {
-            throw new NoDataException("No hay datos disponibles.");
-        }
-
         return coleccion;
     }
 
