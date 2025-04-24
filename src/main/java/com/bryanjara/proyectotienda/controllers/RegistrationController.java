@@ -72,8 +72,12 @@ public class RegistrationController {
                 return;
             }
             view.setMessage("Administrator registered successfully.");
-            view.showRegistrationForm(false);
-            view.showLoginButtons(true);
+            view.dispose();
+            try {
+                new RegistrationController(new RegistrationView());
+            } catch (GlobalException | SQLException | NoDataException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

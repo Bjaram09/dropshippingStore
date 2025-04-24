@@ -8,6 +8,10 @@ public class RegistrationView extends BaseView {
 
     private JPanel form;
     private JPanel buttonField;
+    private JPanel birthDatePanel;
+    private JPanel headerPanel;
+
+    private JLabel titleLabel;
 
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -35,7 +39,7 @@ public class RegistrationView extends BaseView {
 
     public RegistrationView() {
         super();
-        setTitle("Registrar Admin");
+        setTitle("Iniciar Sesion");
         setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(BACKGROUND_COLOR);
@@ -45,7 +49,7 @@ public class RegistrationView extends BaseView {
         headerPanel.setBackground(PRIMARY_COLOR);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
 
-        JLabel titleLabel = new JLabel("Registration");
+        titleLabel = new JLabel("Registration");
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
         headerPanel.add(titleLabel);
@@ -66,7 +70,7 @@ public class RegistrationView extends BaseView {
         Font labelFont = new Font("Segoe UI", Font.BOLD, 14);
         idLabel = createStyledLabel("ID:", labelFont);
         fullNameLabel = createStyledLabel("Nombre Completo:", labelFont);
-        birthDateLabel = createStyledLabel("Birth Date (dd/MM/yyyy):", labelFont);
+        birthDateLabel = createStyledLabel("Fecha de nacimiento (dd/MM/yyyy):", labelFont);
         emailLabel = createStyledLabel("Email:", labelFont);
         usernameLabel = createStyledLabel("Nombre de Usuario:", labelFont);
         passwordLabel = createStyledLabel("Contraseña:", labelFont);
@@ -89,13 +93,13 @@ public class RegistrationView extends BaseView {
         int currentYear = java.time.LocalDate.now().getYear();
         for (int i = currentYear; i >= 1900; i--) yearCombo.addItem(i);
 
-        JPanel birthDatePanel = new JPanel();
+        birthDatePanel = new JPanel();
         birthDatePanel.setLayout(new FlowLayout());
-        birthDatePanel.add(new JLabel("Day:"));
+        birthDatePanel.add(new JLabel("Dia:"));
         birthDatePanel.add(dayCombo);
-        birthDatePanel.add(new JLabel("Month:"));
+        birthDatePanel.add(new JLabel("Mes:"));
         birthDatePanel.add(monthCombo);
-        birthDatePanel.add(new JLabel("Year:"));
+        birthDatePanel.add(new JLabel("Año:"));
         birthDatePanel.add(yearCombo);
 
         emailField = createStyledTextField(inputFont);
@@ -112,7 +116,7 @@ public class RegistrationView extends BaseView {
         addFormRow(gbc, passwordLabel, passwordField, row++);
         addFormRow(gbc, confirmPasswordLabel, confirmPasswordField, row++);
 
-        registerButton = new JButton("Register Admin");
+        registerButton = new JButton("Registrar Admin");
         registerButton.setBackground(PRIMARY_COLOR);
         registerButton.setForeground(Color.WHITE);
         registerButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -121,7 +125,7 @@ public class RegistrationView extends BaseView {
         registerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         buttonField.add(registerButton);
 
-        loginAdminButton = new JButton("Login as Admin");
+        loginAdminButton = new JButton("Loguearse como Admin");
         loginAdminButton.setBackground(PRIMARY_COLOR);
         loginAdminButton.setForeground(Color.WHITE);
         loginAdminButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -130,7 +134,7 @@ public class RegistrationView extends BaseView {
         loginAdminButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         buttonField.add(loginAdminButton);
 
-        loginCompradorButton = new JButton("Login as Comprador");
+        loginCompradorButton = new JButton("Loguearse como Comprador");
         loginCompradorButton.setBackground(PRIMARY_COLOR);
         loginCompradorButton.setForeground(Color.WHITE);
         loginCompradorButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -213,7 +217,7 @@ public class RegistrationView extends BaseView {
         int day = (int) dayCombo.getSelectedItem();
         int month = (int) monthCombo.getSelectedItem();
         int year = (int) yearCombo.getSelectedItem();
-        return String.format("%02d-%02d-%d", day, month, year);
+        return String.format("%02d/%02d/%d", day, month, year);
     }
 
     public String getEmail() {
@@ -242,10 +246,37 @@ public class RegistrationView extends BaseView {
         passwordLabel.setVisible(show);
         passwordField.setVisible(show);
         registerButton.setVisible(show);
+        fullNameLabel.setVisible(show);
+        fullNameField.setVisible(show);
+        idLabel.setVisible(show);
+        idField.setVisible(show);
+        birthDateLabel.setVisible(show);
+        dayCombo.setVisible(show);
+        monthCombo.setVisible(show);
+        yearCombo.setVisible(show);
+        emailLabel.setVisible(show);
+        emailField.setVisible(show);
     }
 
     public void showLoginButtons(boolean show) {
         loginAdminButton.setVisible(show);
         loginCompradorButton.setVisible(show);
+        fullNameLabel.setVisible(!show);
+        fullNameField.setVisible(!show);
+        idLabel.setVisible(!show);
+        idField.setVisible(!show);
+        birthDateLabel.setVisible(!show);
+        birthDatePanel.setVisible(!show);
+        dayCombo.setVisible(!show);
+        monthCombo.setVisible(!show);
+        yearCombo.setVisible(!show);
+        emailLabel.setVisible(!show);
+        emailField.setVisible(!show);
+        usernameLabel.setVisible(show);
+        usernameField.setVisible(show);
+        passwordLabel.setVisible(show);
+        passwordField.setVisible(show);
+        confirmPasswordLabel.setVisible(!show);
+        confirmPasswordField.setVisible(!show);
     }
 }

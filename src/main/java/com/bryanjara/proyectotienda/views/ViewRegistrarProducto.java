@@ -24,7 +24,7 @@ public class ViewRegistrarProducto extends BaseView {
     private JLabel labelVendedor;
 
     public ViewRegistrarProducto(){
-        
+
     }
 
 

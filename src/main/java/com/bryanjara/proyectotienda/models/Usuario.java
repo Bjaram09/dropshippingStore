@@ -8,7 +8,7 @@ public abstract class Usuario {
     protected String nombreUsuario;
     protected String nombreCompleto;
     protected String cedulaIdentidad;
-    protected String fechaNacimiento; // Formato: "dd/MM/yyyy"
+    protected String fechaNacimiento; // Formato: "dd-MM-yyyy"
     protected String correoElectronico;
     protected String contrasenia;
 
@@ -89,7 +89,7 @@ public abstract class Usuario {
 
     public boolean validarEdad() {
         try {
-            DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate fechaNac = LocalDate.parse(fechaNacimiento, formateador);
             LocalDate fechaActual = LocalDate.now();
             return Period.between(fechaNac, fechaActual).getYears() >= 18;

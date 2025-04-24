@@ -38,7 +38,7 @@ public class Producto {
 
     // Constructor con parámetros
     public Producto(String nombre, String categoria, double precio, double peso, String dimensiones,
-                     ArrayList<Image> imagenes, String descripcion, int inventarioDisponible, Vendedor vendedor) {
+                    ArrayList<Image> imagenes, String descripcion, int inventarioDisponible, Vendedor vendedor) {
         this.nombre = nombre;
         this.categoria = categoria;
         this.precio = precio;

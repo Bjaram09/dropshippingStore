@@ -2,69 +2,76 @@ package com.bryanjara.proyectotienda.views;
 
 import com.bryanjara.proyectotienda.models.Factura;
 import com.bryanjara.proyectotienda.models.LineaFactura;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 
-/**
- *
- * @author Fio
- */
-public class ViewFactura extends JFrame {
-
+public class ViewFactura extends BaseView {
     private final DefaultListModel<LineaFactura> modeloLineas;
     private final JList<LineaFactura> listaLineas;
     private final JTextField inputImpuesto;
     private final JTextField inputTotal;
 
-    private final JButton btnAgregar = new JButton("Registrar Factura");
-    private final JButton btnCancelar = new JButton("Cancelar");
-    private final JButton btnCalcularTotal = new JButton("Calcular Total");
+    private final JButton btnAgregar;
+    private final JButton btnCancelar;
+    private final JButton btnCalcularTotal;
 
     public ViewFactura() {
         setTitle("Registrar Factura");
-        setSize(600, 400);
+        setSize(700, 500);
         setLayout(new BorderLayout(10, 10));
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        getContentPane().setBackground(BACKGROUND_COLOR);
+
+        JPanel headerPanel = createHeaderPanel("Registrar Factura");
+        add(headerPanel, BorderLayout.NORTH);
 
         modeloLineas = new DefaultListModel<>();
         listaLineas = new JList<>(modeloLineas);
         listaLineas.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
+        listaLineas.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        listaLineas.setBackground(TABLE_ALTERNATE_ROW_COLOR);
+        listaLineas.setSelectionBackground(SECONDARY_COLOR);
+        listaLineas.setSelectionForeground(Color.WHITE);
         JScrollPane scroll = new JScrollPane(listaLineas);
+        scroll.setBorder(BorderFactory.createTitledBorder("LÃ­neas de Factura"));
+        add(scroll, BorderLayout.CENTER);
 
         inputImpuesto = new JTextField();
-        inputImpuesto.setEditable(false);
         inputTotal = new JTextField();
+
+        inputImpuesto.setEditable(false);
         inputTotal.setEditable(false);
+        inputImpuesto.setBackground(INPUT_BACKGROUND);
+        inputTotal.setBackground(INPUT_BACKGROUND);
 
-        JPanel panelCentro = new JPanel(new GridLayout(2, 2, 10, 10));
-        panelCentro.add(new JLabel("Impuesto (13%):"));
-        panelCentro.add(inputImpuesto);
-        panelCentro.add(new JLabel("Monto Total:"));
-        panelCentro.add(inputTotal);
+        JPanel panelCampos = new JPanel(new GridLayout(2, 2, 10, 10));
+        panelCampos.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+        panelCampos.setBackground(BACKGROUND_COLOR);
 
-        JPanel panelBotones = new JPanel();
+        panelCampos.add(new JLabel("Impuesto (13%):"));
+        panelCampos.add(inputImpuesto);
+        panelCampos.add(new JLabel("Monto Total:"));
+        panelCampos.add(inputTotal);
+
+        add(panelCampos, BorderLayout.SOUTH);
+
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10));
+        panelBotones.setBackground(BACKGROUND_COLOR);
+
+        btnCalcularTotal = createStyledButton("Calcular Total", SECONDARY_COLOR);
+        btnAgregar = createStyledButton("Registrar Factura", PRIMARY_COLOR);
+        btnCancelar = createStyledButton("Cancelar", ACCENT_COLOR);
+
         panelBotones.add(btnCalcularTotal);
         panelBotones.add(btnAgregar);
         panelBotones.add(btnCancelar);
 
-        add(scroll, BorderLayout.CENTER);
-        add(panelCentro, BorderLayout.SOUTH);
-        add(panelBotones, BorderLayout.NORTH);
-
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        add(panelBotones, BorderLayout.PAGE_END);
     }
 
     public void cargarLineasFactura(List<LineaFactura> lineas) {
@@ -97,9 +104,9 @@ public class ViewFactura extends JFrame {
     }
 
     public List<LineaFactura> getLineasSeleccionadas() {
-        return listaLineas.getSelectedValuesList(); 
+        return listaLineas.getSelectedValuesList();
     }
-    
+
     public Factura construirFactura() {
         List<LineaFactura> seleccionadas = getLineasSeleccionadas();
         double subtotal = 0;

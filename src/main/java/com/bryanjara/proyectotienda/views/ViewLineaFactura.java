@@ -10,26 +10,37 @@ import java.awt.event.ActionListener;
  *
  * @author Fio
  */
-public class ViewLineaFactura extends JFrame  {
+public class ViewLineaFactura extends BaseView  {
 
     private final JComboBox<ItemCarrito> dropdownItemCarrito;
     private final JTextField inputCantidad;
     private final JTextField inputPrecioIndividual;
     private final JTextField inputMontoTotal;
 
-    private final JButton btnCancelar = new JButton("Cancelar");
-    private final JButton btnAgregarLinea = new JButton("Agregar Factura");
-    private final JButton btnIrAFactura = new JButton("Ir a Factura");
+    private final JButton btnCancelar;
+    private final JButton btnAgregarLinea;
+    private final JButton btnIrAFactura;
 
     public ViewLineaFactura() {
-        setTitle("Registrar Línea de Factura");        
+        setTitle("Registrar Línea de Factura");
         setSize(800, 500);
-        setLayout(new GridLayout(8, 4));
+        setLayout(new BorderLayout());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        getContentPane().setBackground(BACKGROUND_COLOR);
+
+        // Header
+        JPanel headerPanel = createHeaderPanel("Registrar Línea de Factura");
+        add(headerPanel, BorderLayout.NORTH);
+
+        // Centro con el formulario
+        JPanel formPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+        formPanel.setBackground(BACKGROUND_COLOR);
+        formPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
         dropdownItemCarrito = new JComboBox<>();
         dropdownItemCarrito.addActionListener(e -> mostrarDatosDeItemSeleccionado());
+
         inputCantidad = new JTextField();
         inputPrecioIndividual = new JTextField();
         inputMontoTotal = new JTextField();
@@ -38,19 +49,34 @@ public class ViewLineaFactura extends JFrame  {
         inputPrecioIndividual.setEditable(false);
         inputMontoTotal.setEditable(false);
 
-        add(new JLabel("Nombre del Producto:"));
-        add(dropdownItemCarrito);
-        add(new JLabel("Cantidad:"));
-        add(inputCantidad);
-        add(new JLabel("Precio Individual:"));
-        add(inputPrecioIndividual);
-        add(new JLabel("Monto Total:"));
-        add(inputMontoTotal);
-        add(btnAgregarLinea);
-        add(btnIrAFactura);
-        add(btnCancelar);
+        inputCantidad.setBackground(INPUT_BACKGROUND);
+        inputPrecioIndividual.setBackground(INPUT_BACKGROUND);
+        inputMontoTotal.setBackground(INPUT_BACKGROUND);
 
-        setLocationRelativeTo(null);
+        formPanel.add(new JLabel("Nombre del Producto:"));
+        formPanel.add(dropdownItemCarrito);
+        formPanel.add(new JLabel("Cantidad:"));
+        formPanel.add(inputCantidad);
+        formPanel.add(new JLabel("Precio Individual:"));
+        formPanel.add(inputPrecioIndividual);
+        formPanel.add(new JLabel("Monto Total:"));
+        formPanel.add(inputMontoTotal);
+
+        add(formPanel, BorderLayout.CENTER);
+
+        // Panel de botones
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 10));
+        buttonPanel.setBackground(BACKGROUND_COLOR);
+
+        btnAgregarLinea = createStyledButton("Agregar Factura", PRIMARY_COLOR);
+        btnIrAFactura = createStyledButton("Ir a Factura", SECONDARY_COLOR);
+        btnCancelar = createStyledButton("Cancelar", ACCENT_COLOR);
+
+        buttonPanel.add(btnAgregarLinea);
+        buttonPanel.add(btnIrAFactura);
+        buttonPanel.add(btnCancelar);
+
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 
     public void cargarItemsCarrito(ItemCarrito[] items) {
