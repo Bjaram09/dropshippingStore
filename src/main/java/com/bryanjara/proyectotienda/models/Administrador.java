@@ -6,7 +6,11 @@ public class Administrador extends Usuario {
     private static Administrador instance;
     private ArrayList<Vendedor> vendedores;
 
-    private Administrador(String nombreUsuario, String nombreCompleto, String cedulaIdentidad, String fechaNacimiento, String correoElectronico, String contrasenia) {
+    public Administrador(){
+        super();
+    }
+
+    public Administrador(String nombreUsuario, String nombreCompleto, String cedulaIdentidad, String fechaNacimiento, String correoElectronico, String contrasenia) {
         super(nombreUsuario, nombreCompleto, cedulaIdentidad, fechaNacimiento, correoElectronico, contrasenia);
         vendedores = new ArrayList<Vendedor>();
     }

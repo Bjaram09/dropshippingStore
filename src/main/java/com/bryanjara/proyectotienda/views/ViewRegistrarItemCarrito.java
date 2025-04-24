@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class ViewRegistrarItemCarrito extends JFrame {
+public class ViewRegistrarItemCarrito extends BaseView {
     private JTextField inputNombreProducto = new JTextField();
     private JTextField inputCategoria = new JTextField();
     private JTextField inputPrecio = new JTextField();

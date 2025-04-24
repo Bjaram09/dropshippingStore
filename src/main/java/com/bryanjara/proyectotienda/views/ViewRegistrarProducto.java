@@ -2,7 +2,7 @@ package com.bryanjara.proyectotienda.views;
 
 import javax.swing.*;
 
-public class ViewRegistrarProducto extends JFrame {
+public class ViewRegistrarProducto extends BaseView {
     private JTextField inputNombre;
     private JComboBox dropdownCategoria;
     private JTextField inputPrecio;
