@@ -16,7 +16,7 @@ public class AdministradorDAO extends ServicioDB{
     private static final String MODIFICAR_ADMINISTRADOR = "{CALL DROPSHIPPING.MODIFICAR_ADMINISTRADOR(?, ?, ?, ?, ?, ?)}";
     private static final String ELIMINAR_ADMINISTRADOR = "{CALL DROPSHIPPING.ELIMINAR_ADMINISTRADOR(?)}";
     private static final String LISTAR_ADMINISTRADOR = "SELECT DROPSHIPPING.LISTAR_ADMINISTRADORES FROM DUAL";
-    private static final String BUSCAR_ADMINISTRADOR_POR_ID = "SELECT DROPSHIPPING.BUSCAR_ADMIN_POR_CEDULA(?) FROM DUAL";
+    private static final String BUSCAR_ADMINISTRADOR_POR_NOMBRE = "SELECT DROPSHIPPING.BUSCAR_ADMIN_POR_NOMBREUSUARIO(?) FROM DUAL";
 
     public AdministradorDAO() {
         super();
@@ -28,10 +28,14 @@ public class AdministradorDAO extends ServicioDB{
             pstmt.setString(2, administrador.getNombreUsuario());
             pstmt.setString(3, administrador.getNombreCompleto());
 
+            System.out.println("AdministradorDAO: line 32 - " + administrador.getFechaNacimiento());
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             try {
                 java.util.Date utilDate = sdf.parse(administrador.getFechaNacimiento());
                 java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+                System.out.println("AdministradorDAO: line 38 - " + sqlDate);
+
                 pstmt.setDate(4, sqlDate);
             } catch (ParseException e) {
                 throw new IllegalArgumentException("Invalid date format. Expected dd/MM/yyyy");
@@ -157,6 +161,7 @@ public class AdministradorDAO extends ServicioDB{
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+                    
                     Administrador administrador = new Administrador(
                             administradoresCursor.getString("CEDULAIDENTIDAD"),
                             administradoresCursor.getString("NOMBREUSUARIO"),
@@ -178,7 +183,7 @@ public class AdministradorDAO extends ServicioDB{
         return coleccion;
     }
 
-    public Administrador buscarAdministrador(String id) throws GlobalException, NoDataException, SQLException {
+    public Administrador buscarAdministrador(String username) throws GlobalException, NoDataException, SQLException {
         try {
             conectar();
         } catch (ClassNotFoundException e) {
@@ -189,17 +194,26 @@ public class AdministradorDAO extends ServicioDB{
 
         Administrador administrador = null;
 
-        try (PreparedStatement pstmt = conexion.prepareStatement(BUSCAR_ADMINISTRADOR_POR_ID)) {
-            pstmt.setString(1, id);
+        try (PreparedStatement pstmt = conexion.prepareStatement(BUSCAR_ADMINISTRADOR_POR_NOMBRE)) {
+            pstmt.setString(1, username);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     ResultSet administradorCursor = (ResultSet) rs.getObject(1);
                     if (administradorCursor.next()) {
+                        String fechaNacimiento = administradorCursor.getString("FECHANACIMIENTO");
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        try {
+                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimiento);
+                            fechaNacimiento = sdf.format(date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
                         administrador = new Administrador(
                                 administradorCursor.getString("CEDULAIDENTIDAD"),
                                 administradorCursor.getString("NOMBREUSUARIO"),
                                 administradorCursor.getString("NOMBRECOMPLETO"),
-                                administradorCursor.getString("FECHANACIMIENTO"),
+                                fechaNacimiento,
                                 administradorCursor.getString("CORREOELECTRONICO"),
                                 administradorCursor.getString("CONTRASENIA")
                         );

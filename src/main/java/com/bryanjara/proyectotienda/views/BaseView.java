@@ -5,11 +5,11 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 
 public class BaseView extends JFrame {
-    protected static final Color PRIMARY_COLOR = new Color(41, 128, 185);
-    protected static final Color SECONDARY_COLOR = new Color(52, 152, 219);
-    protected static final Color ACCENT_COLOR = new Color(231, 76, 60);
-    protected static final Color BACKGROUND_COLOR = new Color(236, 240, 241);
-    protected static final Color TABLE_HEADER_COLOR = new Color(52, 73, 94);
+    protected static final Color PRIMARY_COLOR = new Color(65, 105, 225);   // Royal Blue
+    protected static final Color SECONDARY_COLOR = new Color(100, 149, 237);  // Cornflower Blue
+    protected static final Color ACCENT_COLOR = new Color(255, 165, 0);    // Orange
+    protected static final Color BACKGROUND_COLOR = new Color(240, 248, 255); // Alice Blue
+    protected static final Color TABLE_HEADER_COLOR = new Color(65, 105, 225);  // Royal Blue
     protected static final Color TABLE_ROW_COLOR = Color.WHITE;
     protected static final Color TABLE_ALTERNATE_ROW_COLOR = new Color(245, 245, 245);
     protected static final Color INPUT_BACKGROUND = Color.WHITE;
@@ -44,7 +44,7 @@ public class BaseView extends JFrame {
         table.setShowGrid(true);
         table.setGridColor(new Color(230, 230, 230));
         table.setBackground(TABLE_ROW_COLOR);
-        table.setSelectionForeground(ACCENT_COLOR);
+        table.setSelectionForeground(Color.BLACK);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
         JTableHeader header = table.getTableHeader();

@@ -3,18 +3,23 @@ package com.bryanjara.proyectotienda.dataaccess;
 import com.bryanjara.proyectotienda.models.Producto;
 import com.bryanjara.proyectotienda.models.Vendedor;
 
+import oracle.jdbc.internal.OracleTypes;
+
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class ProductoDAO extends ServicioDB {
     private static final String INSERTAR_PRODUCTO = "{CALL DROPSHIPPING.INSERTAR_PRODUCTO(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     private static final String MODIFICAR_PRODUCTO = "{CALL DROPSHIPPING.MODIFICAR_PRODUCTO(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     private static final String ELIMINAR_PRODUCTO = "{CALL DROPSHIPPING.ELIMINAR_PRODUCTO(?)}";
-    private static final String LISTAR_PRODUCTO = "{?=CALL DROPSHIPPING.LISTAR_PRODUCTO()}";
-    private static final String BUSCAR_PRODUCTO_POR_ID = "{?=CALL DROPSHIPPING.BUSCAR_PRODUCTO_POR_ID(?)}";
+    private static final String LISTAR_PRODUCTO = "SELECT DROPSHIPPING.LISTAR_PRODUCTO FROM DUAL";
+    private static final String BUSCAR_PRODUCTO_POR_ID = "SELECT DROPSHIPPING.BUSCAR_PRODUCTO_POR_ID(?) FROM DUAL";
+    private static final String BUSCAR_PRODUCTO_POR_CRITERIO = "{? = CALL DROPSHIPPING.BUSCAR_PROD_POR_CRITERIO(?)}";
 
     VendedorDAO vendedorDAO;
 
@@ -24,6 +29,15 @@ public class ProductoDAO extends ServicioDB {
     }
 
     public void insertarProducto(Producto producto) throws GlobalException, NoDataException, SQLException {
+        Vendedor vendedorConsultado;
+        try {
+            vendedorConsultado = vendedorDAO.buscarVendedor(producto.getVendedor().getCedula());
+        } catch (NoDataException e) {
+            throw new GlobalException("El Vendedor con ID " + producto.getVendedor().getCedula() + " no existe en la base de datos.");
+        } catch (SQLException e) {
+            throw new GlobalException("Error al consultar Producto");
+        }
+        
         try {
             conectar();
         } catch (ClassNotFoundException e) {
@@ -32,25 +46,16 @@ public class ProductoDAO extends ServicioDB {
             throw new NoDataException("La base de datos no se encuentra disponible");
         }
 
-        // Then verify that the Vendedor exists
-        Vendedor vendedorConsultado;
-        try {
-            vendedorConsultado = vendedorDAO.buscarVendedor(producto.getVendedor().getCedula());
-        } catch (NoDataException e) {
-            throw new GlobalException("El Producto con ID " + producto.getVendedor().getCedula() + " no existe en la base de datos.");
-        } catch (SQLException e) {
-            throw new GlobalException("Error al consultar Producto");
-        }
-
         try (CallableStatement pstmt = conexion.prepareCall(INSERTAR_PRODUCTO)) {
-            pstmt.setString(1, producto.getNombre());
-            pstmt.setString(2, producto.getCategoria());
-            pstmt.setDouble(3, producto.getPrecio());
-            pstmt.setDouble(4, producto.getPeso());
-            pstmt.setString(5, producto.getDimensiones());
-            pstmt.setString(6, producto.getDescripcion());
-            pstmt.setInt(7, producto.getInventarioDisponible());
-            pstmt.setString(8, producto.getVendedor().getCedula());
+            pstmt.setInt(1, producto.getID());
+            pstmt.setString(2, producto.getNombre());
+            pstmt.setString(3, producto.getCategoria());
+            pstmt.setDouble(4, producto.getPrecio());
+            pstmt.setDouble(5, producto.getPeso());
+            pstmt.setString(6, producto.getDimensiones());
+            pstmt.setString(7, producto.getDescripcion());
+            pstmt.setInt(8, producto.getInventarioDisponible());
+            pstmt.setString(9, producto.getVendedor().getCedula());
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected == 0) {
@@ -64,17 +69,16 @@ public class ProductoDAO extends ServicioDB {
         }
     }
 
-    /*public void modificarProducto(Producto producto) throws GlobalException, NoDataException, SQLException {
-        // Make sure that a Producto exists on my DB
+    public void modificarProducto(Producto producto) throws GlobalException, NoDataException, SQLException {
         Producto productoExistente;
         try {
             productoExistente = buscarProducto(producto.getID());
         } catch (NoDataException e) {
-            throw new GlobalException("El Producto con ID " + producto.getId() + " no existe en la base de datos.");
+            throw new GlobalException("El producto con ID " + producto.getID() + " no existe en la base de datos.");
         } catch (SQLException e) {
             throw new GlobalException("Error al consultar Producto");
         }
-
+        
         try {
             conectar();
         } catch (ClassNotFoundException e) {
@@ -83,43 +87,29 @@ public class ProductoDAO extends ServicioDB {
             throw new NoDataException("La base de datos no se encuentra disponible");
         }
 
-        // Verify that the Factura exists
-        try {
-            facturaDAO.buscarFacturaPorId(facturaId);
-        } catch (NoDataException e) {
-            throw new GlobalException("La Factura con ID " + facturaId + " no existe en la base de datos.");
-        } catch (SQLException e) {
-            throw new GlobalException("Error al consultar Factura");
-        }
-
-        // Making sure that my producto exists on my DB
-        Producto productoConsultado;
-        try {
-            productoConsultado = productoDAO.buscarProducto(producto.getInfoProducto().getId());
-        } catch (NoDataException e) {
-            throw new GlobalException("El producto con ID " + producto.getInfoProducto().getId() + " no existe en la base de datos.");
-        } catch (SQLException e) {
-            throw new GlobalException("Error al consultar Producto");
-        }
-
         try (CallableStatement pstmt = conexion.prepareCall(MODIFICAR_PRODUCTO)) {
-            pstmt.setString(1, productoExistente.getId());
-            pstmt.setString(2, facturaId);
-            pstmt.setString(3, productoConsultado.getId());
-            pstmt.setInt(4, productoExistente.getCantidad());
+            pstmt.setInt(1, producto.getID());
+            pstmt.setString(2, producto.getNombre());
+            pstmt.setString(3, producto.getCategoria());
+            pstmt.setDouble(4, producto.getPrecio());
+            pstmt.setDouble(5, producto.getPeso());
+            pstmt.setString(6, producto.getDimensiones());
+            pstmt.setString(7, producto.getDescripcion());
+            pstmt.setInt(8, producto.getInventarioDisponible());
+            pstmt.setString(9, producto.getVendedor().getCedula());
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected == 0) {
                 throw new NoDataException("No se realizó la modificación del Producto.");
             }
         } catch (SQLException e) {
-            throw new GlobalException("Error al modificar Producto");
+            throw new GlobalException("Error al modificar Producto: " + e.getMessage());
         } finally {
             desconectar();
         }
     }
 
-    public void eliminarProducto(String id) throws GlobalException, NoDataException, SQLException {
+    public void eliminarProducto(int id) throws GlobalException, NoDataException, SQLException {
         try {
             conectar();
         } catch (ClassNotFoundException e) {
@@ -128,31 +118,21 @@ public class ProductoDAO extends ServicioDB {
             throw new NoDataException("La base de datos no se encuentra disponible");
         }
 
-        try {
-            buscarProducto(id);
-        } catch (NoDataException e) {
-            throw new GlobalException("El producto con ID " + id + " no existe en la base de datos.");
-        } catch (SQLException e) {
-            throw new GlobalException("Error al consultar Producto");
-        }
-
         try (CallableStatement pstmt = conexion.prepareCall(ELIMINAR_PRODUCTO)) {
-            pstmt.setString(1, id);
+            pstmt.setInt(1, id);
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected == 0) {
                 throw new NoDataException("No se eliminó el producto. Puede estar referenciado en otras tablas.");
-            } else {
-                System.out.println("Se eliminó el producto con ID " + id + " correctamente.");
             }
         } catch (SQLException e) {
-            throw new GlobalException("Sentencia no válida");
+            throw new GlobalException("Error al eliminar Producto: " + e.getMessage());
         } finally {
             desconectar();
         }
     }
 
-    public Collection<Producto> listarProducto() throws GlobalException, NoDataException, SQLException {
+    public Collection<Producto> listarProductos() throws GlobalException, NoDataException, SQLException {
         try {
             conectar();
         } catch (ClassNotFoundException e) {
@@ -163,24 +143,30 @@ public class ProductoDAO extends ServicioDB {
 
         ArrayList<Producto> coleccion = new ArrayList<>();
 
-        try (CallableStatement pstmt = conexion.prepareCall(LISTAR_PRODUCTO)) {
-            pstmt.registerOutParameter(1, OracleTypes.CURSOR);
-            pstmt.execute();
-            try (ResultSet rs = (ResultSet) pstmt.getObject(1)) {
+        try (PreparedStatement pstmt = conexion.prepareStatement(LISTAR_PRODUCTO); ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    String productoId = rs.getString("PRODUCTOID");
-                    Producto productoConsultado = productoDAO.buscarProducto(productoId);
+                    ResultSet productosCursor = (ResultSet) rs.getObject(1);
+                    while(productosCursor.next()){
 
-                    Producto producto = new Producto(
-                            rs.getString("ID"),
-                            productoConsultado,
-                            rs.getInt("CANTIDAD")
-                    );
+                        String vendedorCedula = productosCursor.getString("VENDEDORCEDULA");
+                        Vendedor vendedorConsultado = vendedorDAO.buscarVendedor(vendedorCedula);
+
+                        Producto producto = new Producto(
+                            productosCursor.getInt("ID"),
+                            productosCursor.getString("NOMBRE"),
+                            productosCursor.getString("CATEGORIA"),
+                            productosCursor.getDouble("PRECIO"),
+                            productosCursor.getDouble("PESO"),
+                            productosCursor.getString("DIMENSIONES"),
+                            productosCursor.getString("DESCRIPCION"),
+                            productosCursor.getInt("INVENTARIODISPONIBLE"),
+                            vendedorConsultado
+                        );
                     coleccion.add(producto);
                 }
             }
         } catch (SQLException e) {
-            throw new GlobalException("Error al ejecutar consulta");
+            throw new GlobalException("Error al ejecutar consulta: " + e.getMessage());
         } finally {
             desconectar();
         }
@@ -192,7 +178,7 @@ public class ProductoDAO extends ServicioDB {
         return coleccion;
     }
 
-    public Producto buscarProducto(String id) throws GlobalException, NoDataException, SQLException {
+    public Producto buscarProducto(int id) throws GlobalException, NoDataException, SQLException {
         try {
             conectar();
         } catch (ClassNotFoundException e) {
@@ -202,25 +188,32 @@ public class ProductoDAO extends ServicioDB {
         }
 
         Producto producto = null;
-        try (CallableStatement pstmt = conexion.prepareCall(BUSCAR_PRODUCTO_POR_ID)) {
-            pstmt.registerOutParameter(1, OracleTypes.CURSOR);
-            pstmt.setString(2, id);
-            pstmt.execute();
 
-            try (ResultSet rs = (ResultSet) pstmt.getObject(1)) {
+        try (PreparedStatement pstmt = conexion.prepareStatement(BUSCAR_PRODUCTO_POR_ID)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    String productoId = rs.getString("PRODUCTOID");
-                    Producto productoConsultado = productoDAO.buscarProducto(productoId);
+                    ResultSet productoCursor = (ResultSet) rs.getObject(1);
+                    if (productoCursor.next()) {
+                        String vendedorCedula = productoCursor.getString("VENDEDORCEDULA");
+                        Vendedor vendedorConsultado = vendedorDAO.buscarVendedor(vendedorCedula);
 
-                    producto = new Producto(
-                            rs.getString("ID"),
-                            productoConsultado,
-                            rs.getInt("CANTIDAD")
-                    );
+                        producto = new Producto(
+                            productoCursor.getInt("ID"),
+                            productoCursor.getString("NOMBRE"),
+                            productoCursor.getString("CATEGORIA"),
+                            productoCursor.getDouble("PRECIO"),
+                            productoCursor.getDouble("PESO"),
+                            productoCursor.getString("DIMENSIONES"),
+                            productoCursor.getString("DESCRIPCION"),
+                            productoCursor.getInt("INVENTARIODISPONIBLE"),
+                            vendedorConsultado
+                        );
+                    }
                 }
             }
         } catch (SQLException e) {
-            throw new GlobalException("Sentencia no válida");
+            throw new GlobalException("Sentencia no válida " + e);
         } finally {
             desconectar();
         }
@@ -230,6 +223,48 @@ public class ProductoDAO extends ServicioDB {
         }
 
         return producto;
-    }*/
+    }
 
+    public Collection<Producto> buscarProductoPorCriterio(String criterio) throws GlobalException, NoDataException, SQLException {
+        try {
+            conectar();
+        } catch (ClassNotFoundException e) {
+            throw new GlobalException("No se ha localizado el driver");
+        } catch (SQLException e) {
+            throw new NoDataException("La base de datos no se encuentra disponible");
+        }
+
+        try (CallableStatement stmt = conexion.prepareCall(BUSCAR_PRODUCTO_POR_CRITERIO)) {
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
+            stmt.setString(2, criterio); 
+
+            stmt.execute();
+
+            try (ResultSet rs = (ResultSet) stmt.getObject(1)) {
+                List<Producto> productos = new ArrayList<>();
+                while (rs.next()) {
+                    String vendedorCedula = rs.getString("VENDEDORCEDULA");
+                    Vendedor vendedorConsultado = vendedorDAO.buscarVendedor(vendedorCedula);
+
+                    Producto producto = new Producto();
+                    producto.setID(rs.getInt("ID"));
+                    producto.setNombre(rs.getString("NOMBRE"));
+                    producto.setCategoria(rs.getString("CATEGORIA"));
+                    producto.setPrecio(rs.getDouble("PRECIO"));
+                    producto.setPeso(rs.getDouble("PESO"));
+                    producto.setDimensiones(rs.getString("DIMENSIONES"));
+                    producto.setDescripcion(rs.getString("DESCRIPCION"));
+                    producto.setInventarioDisponible(rs.getInt("INVENTARIODISPONIBLE"));
+                    producto.setVendedor(vendedorConsultado);
+
+                    productos.add(producto);
+                }
+                return productos;
+            }
+        } catch (SQLException e) {
+            throw new GlobalException("Error al buscar productos: " + e.getMessage());
+        } finally {
+            desconectar();
+        }
+    }
 }

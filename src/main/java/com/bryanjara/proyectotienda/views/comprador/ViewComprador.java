@@ -1,30 +1,44 @@
-package com.bryanjara.proyectotienda.views.vendedor;
+package com.bryanjara.proyectotienda.views.comprador;
 
-import com.bryanjara.proyectotienda.models.Vendedor;
-import com.bryanjara.proyectotienda.views.BaseView;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 
-public class ViewVendedor extends BaseView {
-    private DefaultTableModel modeloTablaVendedor;
-    private JTable tablaVendedores;
-    private JButton btnRegistrarVendedor;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+
+import com.bryanjara.proyectotienda.models.Comprador;
+import com.bryanjara.proyectotienda.views.BaseView;
+
+public class ViewComprador extends BaseView {
+    private DefaultTableModel modeloTablaComprador;
+    private JTable tablaCompradores;
+    private JButton btnRegistrarComprador;
     private ActionListener deleteListener;
     private ActionListener updateListener;
 
-    private JTextField txtBuscarVendedor;
-    private JButton btnBuscarVendedor;
+    private JTextField txtBuscarComprador;
+    private JButton btnBuscarComprador;
 
-    public ViewVendedor() {
-        setTitle("Gestión de Vendedors");
+    public ViewComprador() {
+        setTitle("Gestión de Compradores");
         setSize(1400, 600);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -34,56 +48,53 @@ public class ViewVendedor extends BaseView {
         panelSuperior.setLayout(new BoxLayout(panelSuperior, BoxLayout.Y_AXIS));
         panelSuperior.setBackground(BACKGROUND_COLOR);
 
-
         panelSuperior.add(createHeaderPanel("Catalogo"));
 
         JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelBusqueda.setBackground(BACKGROUND_COLOR);
-        txtBuscarVendedor = new JTextField(30);
-        btnBuscarVendedor = new JButton("Buscar");
-        btnBuscarVendedor.setSize(50, 30);
-        btnBuscarVendedor.setBackground(PRIMARY_COLOR);
-        btnBuscarVendedor.setForeground(Color.WHITE);
-        btnBuscarVendedor.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        btnBuscarVendedor.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        btnBuscarVendedor.setFocusPainted(false);
-        btnBuscarVendedor.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        txtBuscarComprador = new JTextField(30);
+        btnBuscarComprador = new JButton("Buscar");
+        btnBuscarComprador.setSize(50, 30);
+        btnBuscarComprador.setBackground(PRIMARY_COLOR);
+        btnBuscarComprador.setForeground(Color.WHITE);
+        btnBuscarComprador.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnBuscarComprador.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        btnBuscarComprador.setFocusPainted(false);
+        btnBuscarComprador.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         panelBusqueda.add(new JLabel("Buscar:"));
-        panelBusqueda.add(txtBuscarVendedor);
-        panelBusqueda.add(btnBuscarVendedor);
+        panelBusqueda.add(txtBuscarComprador);
+        panelBusqueda.add(btnBuscarComprador);
 
-        // Agregar el panel de búsqueda al contenedor
         panelSuperior.add(panelBusqueda);
 
-        // Agregar el contenedor al BorderLayout.NORTH
         add(panelSuperior, BorderLayout.NORTH);
 
-        add(createHeaderPanel("Lista de Vendedores"), BorderLayout.NORTH);
+        add(createHeaderPanel("Lista de Compradores"));
 
-        String[] columnNames = {"Cédula", "Nombre", "Ubicacion", "Correo Contacto", "Telefono", "Acciones"};
-        modeloTablaVendedor = new DefaultTableModel(columnNames, 0) {
+        String[] columnNames = {"Cédula", "Nombre", "Correo Electronico", "Nombre Usuario", "Acciones"};
+        modeloTablaComprador = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 5;
+                return column == 4;
             }
         };
 
-        tablaVendedores = new JTable(modeloTablaVendedor);
-        configureTableStyle(tablaVendedores);
+        tablaCompradores = new JTable(modeloTablaComprador);
+        configureTableStyle(tablaCompradores);
 
         configurarColumnas();
 
-        JScrollPane scrollPane = new JScrollPane(tablaVendedores);
+        JScrollPane scrollPane = new JScrollPane(tablaCompradores);
         scrollPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         add(scrollPane, BorderLayout.CENTER);
 
-        btnRegistrarVendedor = createStyledButton("Registrar Nuevo Vendedor", PRIMARY_COLOR);
+        btnRegistrarComprador = createStyledButton("Registrar Nuevo Comprador", PRIMARY_COLOR);
 
         JPanel panelBotones = new JPanel();
         panelBotones.setBackground(BACKGROUND_COLOR);
         panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        panelBotones.add(btnRegistrarVendedor);
+        panelBotones.add(btnRegistrarComprador);
         add(panelBotones, BorderLayout.SOUTH);
 
         setVisible(true);
@@ -100,28 +111,28 @@ public class ViewVendedor extends BaseView {
         };
         renderer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        for (int i = 0; i < tablaVendedores.getColumnCount() - 1; i++) {
-            tablaVendedores.getColumnModel().getColumn(i).setCellRenderer(renderer);
+        for (int i = 0; i < tablaCompradores.getColumnCount() - 1; i++) {
+            tablaCompradores.getColumnModel().getColumn(i).setCellRenderer(renderer);
         }
 
-        TableColumn actionsColumn = tablaVendedores.getColumnModel().getColumn(5);
+        TableColumn actionsColumn = tablaCompradores.getColumnModel().getColumn(4);
         actionsColumn.setCellRenderer(new ActionsRenderer());
         actionsColumn.setCellEditor(new ActionsEditor(new JTextField()));
     }
 
-    public void listarVendedores(Collection<Vendedor> vendedores) {
-        modeloTablaVendedor.setRowCount(0);
-        for (Vendedor vendedor : vendedores) {
+    public void listarCompradores(Collection<Comprador> compradores) {
+        modeloTablaComprador.setRowCount(0);
+        for (Comprador comprador : compradores) {
 
             Object[] row = {
-                    vendedor.getCedula(),
-                    vendedor.getNombre(),
-                    vendedor.getUbicacion(),
-                    vendedor.getCorreoContacto(),
-                    vendedor.getNumeroTelefono(),
-                    vendedor
+                    comprador.getCedulaIdentidad(),
+                    comprador.getNombreCompleto(),
+                    comprador.getCorreoElectronico(),
+                    comprador.getNombreUsuario(),
+                    comprador
             };
-            modeloTablaVendedor.addRow(row);
+            System.out.println(comprador);
+            modeloTablaComprador.addRow(row);
         }
     }
 
@@ -133,20 +144,24 @@ public class ViewVendedor extends BaseView {
         this.updateListener = listener;
     }
 
-    public JTable getTablaVendedores() {
-        return tablaVendedores;
+    public JTable getTablaCompradores() {
+        return tablaCompradores;
     }
 
-    public JButton getBtnRegistrarVendedor() {
-        return btnRegistrarVendedor;
+    public DefaultTableModel getModeloTabla() {
+        return modeloTablaComprador;
     }
 
-    public JTextField getTxtBuscar() {
-        return txtBuscarVendedor;
+    public JButton getBtnRegistrarComprador() {
+        return btnRegistrarComprador;
     }
 
-    public JButton getBtnBuscar() {
-        return btnBuscarVendedor;
+    public JTextField getTxtBuscarComprador() {
+        return txtBuscarComprador;
+    }
+
+    public JButton getBtnBuscarComprador() {
+        return btnBuscarComprador;
     }
 
     private class ActionsRenderer extends JPanel implements TableCellRenderer {
@@ -188,7 +203,7 @@ public class ViewVendedor extends BaseView {
         private JPanel panel;
         private JButton deleteButton;
         private JButton updateButton;
-        private Vendedor vendedor;
+        private Comprador comprador;
         private boolean isPushed;
 
         public ActionsEditor(JTextField textField) {
@@ -204,7 +219,7 @@ public class ViewVendedor extends BaseView {
             deleteButton.setFocusPainted(false);
             deleteButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             deleteButton.addActionListener(e -> {
-                if (deleteListener != null && vendedor != null) {
+                if (deleteListener != null && comprador != null) {
                     ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "delete");
                     deleteListener.actionPerformed(event);
                 }
@@ -219,7 +234,7 @@ public class ViewVendedor extends BaseView {
             updateButton.setFocusPainted(false);
             updateButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             updateButton.addActionListener(e -> {
-                if (updateListener != null && vendedor != null) {
+                if (updateListener != null && comprador != null) {
                     ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "update");
                     updateListener.actionPerformed(event);
                 }
@@ -230,13 +245,13 @@ public class ViewVendedor extends BaseView {
             panel.add(updateButton);
         }
 
-        public Vendedor getVendedor() {
-            return vendedor;
+        public Comprador getComprador() {
+            return comprador;
         }
 
         @Override
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-            vendedor = (Vendedor) value;
+            comprador = (Comprador) value;
             isPushed = true;
             return panel;
         }
@@ -244,7 +259,7 @@ public class ViewVendedor extends BaseView {
         @Override
         public Object getCellEditorValue() {
             isPushed = false;
-            return vendedor;
+            return comprador;
         }
 
         @Override

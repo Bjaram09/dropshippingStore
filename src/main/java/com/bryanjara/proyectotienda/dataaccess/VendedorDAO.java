@@ -122,7 +122,7 @@ public class VendedorDAO extends ServicioDB {
         }
     }
 
-    public Collection<Vendedor> listarVendedor() throws GlobalException, NoDataException, SQLException {
+    public Collection<Vendedor> listarVendedores() throws GlobalException, NoDataException, SQLException {
         try {
             conectar();
         } catch (ClassNotFoundException e) {
@@ -133,18 +133,18 @@ public class VendedorDAO extends ServicioDB {
 
         ArrayList<Vendedor> coleccion = new ArrayList<>();
 
-        try (PreparedStatement pstmt = conexion.prepareStatement(LISTAR_VENDEDOR); ResultSet rs = pstmt.executeQuery()){
+        try (PreparedStatement pstmt = conexion.prepareStatement(LISTAR_VENDEDOR); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 ResultSet vendedoresCursor = (ResultSet) rs.getObject(1);
                 while (vendedoresCursor.next()) {
                     Vendedor vendedor = new Vendedor(
-                            vendedoresCursor.getString("CEDULA"),
-                            vendedoresCursor.getString("NOMBRE"),
-                            vendedoresCursor.getString("UBICACION"),
-                            vendedoresCursor.getString("CORREOCONTACTO"),
-                            vendedoresCursor.getString("NUMEROTELEFONO")
-                    );
-                    coleccion.add(vendedor);
+                        vendedoresCursor.getString("CEDULA"),
+                        vendedoresCursor.getString("NOMBRE"),
+                        vendedoresCursor.getString("UBICACION"),
+                        vendedoresCursor.getString("CORREOCONTACTO"),
+                        vendedoresCursor.getString("NUMEROTELEFONO")
+                );
+                coleccion.add(vendedor);
                 }
             }
         } catch (SQLException e) {

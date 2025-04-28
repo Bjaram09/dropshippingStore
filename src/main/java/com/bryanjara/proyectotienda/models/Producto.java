@@ -25,6 +25,7 @@ public class Producto {
 
     // Constructor vacío
     public Producto() {
+        this.ID = 0;
         this.nombre = "";
         this.categoria = "";
         this.precio = 0.0;
@@ -36,9 +37,9 @@ public class Producto {
         this.vendedor = new Vendedor();
     }
 
-    // Constructor con parámetros
-    public Producto(String nombre, String categoria, double precio, double peso, String dimensiones,
+    public Producto(int ID, String nombre, String categoria, double precio, double peso, String dimensiones,
                     ArrayList<Image> imagenes, String descripcion, int inventarioDisponible, Vendedor vendedor) {
+        this.ID = ID;
         this.nombre = nombre;
         this.categoria = categoria;
         this.precio = precio;
@@ -51,14 +52,13 @@ public class Producto {
     }
 
     public Producto(int ID, String nombre, String categoria, double precio, double peso, String dimensiones,
-                    ArrayList<Image> imagenes, String descripcion, int inventarioDisponible, Vendedor vendedor) {
+                    String descripcion, int inventarioDisponible, Vendedor vendedor) {
         this.ID = ID;
         this.nombre = nombre;
         this.categoria = categoria;
         this.precio = precio;
         this.peso = peso;
         this.dimensiones = dimensiones;
-        this.imagenes = imagenes;
         this.descripcion = descripcion;
         this.inventarioDisponible = inventarioDisponible;
         this.vendedor = vendedor;

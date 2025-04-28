@@ -32,9 +32,6 @@ public class MenuFactura {
 
             switch (opcion) {
                 case "1" -> controller.registrarFactura(lineas.toArray(LineaFactura[]::new));
-                case "2" -> controller.eliminarFactura();
-                case "3" -> controller.listarFacturas();
-                case "4" -> controller.buscarFactura();
                 default -> JOptionPane.showMessageDialog(null, "Opción inválida");
             }
 

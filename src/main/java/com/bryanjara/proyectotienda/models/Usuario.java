@@ -28,7 +28,11 @@ public abstract class Usuario {
         this.fechaNacimiento = fechaNacimiento;
         this.correoElectronico = correoElectronico;
 
-        if (!validarEdad()) {
+        boolean mayorEdad = validarEdad(fechaNacimiento);
+        System.out.println(mayorEdad);
+
+        if (!mayorEdad) {
+            System.out.println(fechaNacimiento);
             throw new IllegalArgumentException("El usuario debe ser mayor de 18 años.");
         }
 
@@ -87,12 +91,20 @@ public abstract class Usuario {
         this.contrasenia = contrasenia;
     }
 
-    public boolean validarEdad() {
+    public boolean validarEdad(String fechaNacimiento){
         try {
+            String fechaNacimientoFormatted = fechaNacimiento.split(" ")[0]; 
+            System.out.println("validarEdad::97 - fechaNacimientoFormatted: " +fechaNacimientoFormatted);
+
             DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate fechaNac = LocalDate.parse(fechaNacimiento, formateador);
+            LocalDate fechaNac = LocalDate.parse(fechaNacimientoFormatted, formateador);
+            System.out.println("validarEdad::101 - fechaNac: " +fechaNac);
+
             LocalDate fechaActual = LocalDate.now();
+            System.out.println("validarEdad::104 - fechaActual: " +fechaActual);
+
             return Period.between(fechaNac, fechaActual).getYears() >= 18;
+
         } catch (Exception e) {
             return false;
         }

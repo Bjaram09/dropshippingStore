@@ -1,12 +1,28 @@
-package com.bryanjara.proyectotienda.views;
+package com.bryanjara.proyectotienda.views.comprador;
 
-import javax.swing.*;
-import com.bryanjara.proyectotienda.views.administrador.ViewAdministradorMenu;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 
-public class RegistrationView extends BaseView {
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
+import com.bryanjara.proyectotienda.views.BaseView;
+
+public class ViewRegistrarComprador extends BaseView{
     private JPanel form;
     private JPanel buttonField;
     private JPanel birthDatePanel;
@@ -35,11 +51,8 @@ public class RegistrationView extends BaseView {
     private JLabel messageLabel;
 
     private JButton registerButton;
-    private JButton loginAdminButton;
-    private JButton loginCompradorButton;
-    private JButton registerCompradorButton;
 
-    public RegistrationView() {
+    public ViewRegistrarComprador() {
         super();
         setTitle("Iniciar Sesion");
         setSize(800, 600);
@@ -119,24 +132,6 @@ public class RegistrationView extends BaseView {
         addFormRow(gbc, passwordLabel, passwordField, row++);
         addFormRow(gbc, confirmPasswordLabel, confirmPasswordField, row++);
 
-        registerCompradorButton = new JButton("Registrar Comprador");
-        registerCompradorButton.setBackground(PRIMARY_COLOR);
-        registerCompradorButton.setForeground(Color.WHITE);
-        registerCompradorButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        registerCompradorButton.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
-        registerCompradorButton.setFocusPainted(false);
-        registerCompradorButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        buttonField.add(registerCompradorButton);
-
-        loginCompradorButton = new JButton("Loguearse como Comprador");
-        loginCompradorButton.setBackground(PRIMARY_COLOR);
-        loginCompradorButton.setForeground(Color.WHITE);
-        loginCompradorButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        loginCompradorButton.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
-        loginCompradorButton.setFocusPainted(false);
-        loginCompradorButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        buttonField.add(loginCompradorButton);
-
         registerButton = new JButton("Registrar Admin");
         registerButton.setBackground(PRIMARY_COLOR);
         registerButton.setForeground(Color.WHITE);
@@ -144,16 +139,8 @@ public class RegistrationView extends BaseView {
         registerButton.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
         registerButton.setFocusPainted(false);
         registerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
         buttonField.add(registerButton);
-
-        loginAdminButton = new JButton("Loguearse como Admin");
-        loginAdminButton.setBackground(ACCENT_COLOR);
-        loginAdminButton.setForeground(Color.WHITE);
-        loginAdminButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        loginAdminButton.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
-        loginAdminButton.setFocusPainted(false);
-        loginAdminButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        buttonField.add(loginAdminButton);
 
         messageLabel = new JLabel("");
         messageLabel.setForeground(Color.RED);
@@ -240,65 +227,46 @@ public class RegistrationView extends BaseView {
         messageLabel.setText(message);
     }
 
-    public void addRegisterListener(ActionListener listener) {
+    public JTextField getTxtCedula() {
+        return idField;
+    }
+
+    public JButton getBtnRegistrar() {
+        return registerButton;
+    }
+
+    public void setUsername(String username) {
+        usernameField.setText(username);
+    }
+    
+    public void setPassword(String password) {
+        passwordField.setText(password);
+    }
+    
+    public void setConfirmPassword(String confirmPassword) {
+        confirmPasswordField.setText(confirmPassword);
+    }
+    
+    public void setFullName(String fullName) {
+        fullNameField.setText(fullName);
+    }
+    
+    public void setId(String id) {
+        idField.setText(id);
+    }
+    
+    public void setBirthDate(int day, int month, int year) {
+        dayCombo.setSelectedItem(day);
+        monthCombo.setSelectedItem(month);
+        yearCombo.setSelectedItem(year);
+    }
+    
+    public void setEmail(String email) {
+        emailField.setText(email);
+    }
+
+    public void addUpdateListener(ActionListener listener) {
         registerButton.addActionListener(listener);
     }
 
-    public void addRegisterCompradorListener(ActionListener listener) {
-        registerCompradorButton.addActionListener(e -> {
-            showRegistrationForm(true);
-            registerButton.setVisible(false);
-            loginAdminButton.setVisible(false);
-            loginCompradorButton.setVisible(false);
-            listener.actionPerformed(e);
-        });
-    }
-
-    public void addLoginAdminListener(ActionListener listener) {
-        loginAdminButton.addActionListener(listener);
-    }
-
-    public void addLoginCompradorListener(ActionListener listener) {
-        loginCompradorButton.addActionListener(listener);
-    }
-
-    public JTextField getUsernameField() {
-        return usernameField;
-    }
-
-    public JPasswordField getPasswordField() {
-        return passwordField;
-    }
-
-    public void openAdminMenu() {
-        ViewAdministradorMenu adminMenu = new ViewAdministradorMenu();
-        adminMenu.setVisible(true);
-        this.dispose();
-    }
-
-    public void showRegistrationForm(boolean show) {
-        idLabel.setVisible(show);
-        idField.setVisible(show);
-        fullNameLabel.setVisible(show);
-        fullNameField.setVisible(show);
-        birthDateLabel.setVisible(show);
-        birthDatePanel.setVisible(show);
-        emailLabel.setVisible(show);
-        emailField.setVisible(show);
-        confirmPasswordLabel.setVisible(show);
-        confirmPasswordField.setVisible(show);
-        registerButton.setVisible(show);
-
-        form.revalidate();
-        form.repaint();
-    }
-
-    public void showLoginButtons(boolean show) {
-        loginAdminButton.setVisible(show);
-        loginCompradorButton.setVisible(show);
-        registerCompradorButton.setVisible(show);
-
-        form.revalidate();
-        form.repaint();
-    }
 }

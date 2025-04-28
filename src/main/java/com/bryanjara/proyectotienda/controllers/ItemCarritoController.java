@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class ItemCarritoController {
+/*public class ItemCarritoController {
     private ViewRegistrarItemCarrito vista;
 
     public ItemCarritoController(ViewRegistrarItemCarrito vista) {
@@ -36,7 +36,7 @@ public class ItemCarritoController {
                     Vendedor vendedorFicticio = new Vendedor(); // debe existir constructor sin argumentos
 
                     // Crear el producto con todos los argumentos necesarios
-                    Producto producto = new Producto(
+                    /*Producto producto = new Producto(
                             nombre,
                             categoria,
                             precio,
@@ -72,4 +72,4 @@ public class ItemCarritoController {
 
         this.vista.addCancelarListener(e -> vista.dispose());
     }
-}
+}*/

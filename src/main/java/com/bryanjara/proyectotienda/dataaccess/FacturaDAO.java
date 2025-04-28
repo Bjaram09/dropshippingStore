@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collection;
+import oracle.jdbc.internal.OracleTypes;
 
 public class FacturaDAO extends ServicioDB{
     private static final String insertar_factura = "{call insertar_factura(?,?,?)}";
@@ -32,6 +33,7 @@ public class FacturaDAO extends ServicioDB{
 
             pstmt.execute();
             int idGenerado = pstmt.getInt(3);
+            factura.setId(idGenerado);
             System.out.println("Factura insertada con ID: " + idGenerado);
 
         } catch (SQLException e) {

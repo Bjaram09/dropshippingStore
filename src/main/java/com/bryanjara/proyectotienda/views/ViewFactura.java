@@ -3,11 +3,11 @@ package com.bryanjara.proyectotienda.views;
 import com.bryanjara.proyectotienda.models.Factura;
 import com.bryanjara.proyectotienda.models.LineaFactura;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
 
 public class ViewFactura extends BaseView {
     private final DefaultListModel<LineaFactura> modeloLineas;
@@ -23,7 +23,7 @@ public class ViewFactura extends BaseView {
         setTitle("Registrar Factura");
         setSize(700, 500);
         setLayout(new BorderLayout(10, 10));
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         getContentPane().setBackground(BACKGROUND_COLOR);
 
@@ -32,18 +32,16 @@ public class ViewFactura extends BaseView {
 
         modeloLineas = new DefaultListModel<>();
         listaLineas = new JList<>(modeloLineas);
-        listaLineas.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         listaLineas.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         listaLineas.setBackground(TABLE_ALTERNATE_ROW_COLOR);
         listaLineas.setSelectionBackground(SECONDARY_COLOR);
         listaLineas.setSelectionForeground(Color.WHITE);
         JScrollPane scroll = new JScrollPane(listaLineas);
-        scroll.setBorder(BorderFactory.createTitledBorder("LÃ­neas de Factura"));
+        scroll.setBorder(BorderFactory.createTitledBorder("Lineas de Factura"));
         add(scroll, BorderLayout.CENTER);
 
         inputImpuesto = new JTextField();
         inputTotal = new JTextField();
-
         inputImpuesto.setEditable(false);
         inputTotal.setEditable(false);
         inputImpuesto.setBackground(INPUT_BACKGROUND);
@@ -103,15 +101,14 @@ public class ViewFactura extends BaseView {
         btnCalcularTotal.addActionListener(listener);
     }
 
-    public List<LineaFactura> getLineasSeleccionadas() {
-        return listaLineas.getSelectedValuesList();
-    }
-
     public Factura construirFactura() {
-        List<LineaFactura> seleccionadas = getLineasSeleccionadas();
-        double subtotal = 0;
+        List<LineaFactura> lineas = new ArrayList<>();
+        for (int i = 0; i < modeloLineas.size(); i++) {
+            lineas.add(modeloLineas.get(i));
+        }
 
-        for (LineaFactura lf : seleccionadas) {
+        double subtotal = 0;
+        for (LineaFactura lf : lineas) {
             subtotal += lf.getMontoTotal();
         }
 
@@ -120,16 +117,14 @@ public class ViewFactura extends BaseView {
         double total = subtotal + impuestoCalculado;
 
         Factura factura = new Factura();
-        factura.setItemFactura(new ArrayList<>(seleccionadas));
+        factura.setItemFactura(new ArrayList<>(lineas));
         factura.setImpuesto(impuestoCalculado);
         factura.setTotal(total);
 
         return factura;
     }
 
-    public void limpiarCampos() {
-        modeloLineas.clear();
-        inputImpuesto.setText("");
-        inputTotal.setText("");
+    public DefaultListModel<LineaFactura> getModeloLineas() {
+        return modeloLineas;
     }
 }

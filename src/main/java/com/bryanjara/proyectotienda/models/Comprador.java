@@ -33,8 +33,21 @@ public class Comprador extends Usuario {
         }
     }
 
+    public ArrayList<Producto> getListaFavoritos() {
+        if (listaFavoritos == null) {
+            listaFavoritos = new ArrayList<>();
+        }
+        return listaFavoritos;
+    }
+    
     public void agregarFavoritos(Producto producto) {
-        listaFavoritos.add(producto);
+        if (!getListaFavoritos().contains(producto)) {
+            listaFavoritos.add(producto);
+        }
+    }
+
+    public ArrayList<ItemCarrito> getCarritoCompras() {
+        return carritoCompras;
     }
 
     @Override

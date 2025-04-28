@@ -21,7 +21,7 @@ public class ServicioDB {
 
     public void conectar() throws SQLException, ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        this.setConexion(DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "DROPSHIPPING", "Tienda2025$"));
+        this.setConexion(DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XE", "DROPSHIPPING", "Tienda2025$"));
     }
 
     public void desconectar() throws SQLException {

@@ -28,7 +28,7 @@ public class MenuLineaFactura {
                     ServicioItemCarrito servicioItem = new ServicioItemCarrito();
                     ItemCarrito[] carrito = servicioItem.listarItemCarrito();
                     controlador.registrarLineaFactura(carrito);
-                } catch (GlobalException | NoDataException | SQLException e) {
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "Error al cargar ítems del carrito: " + e.getMessage());
                 }
             }
